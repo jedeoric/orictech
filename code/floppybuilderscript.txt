@@ -15,6 +15,7 @@
 ; - Support for file compression in the tool
 ; - Possibility to do partial loads, saves, depacking in realtime
 ;
+FormatVersion 0.20
 ;LoadDiskTemplate default.dsk
 DefineDisk 2 42 17							; 2 sides, 42 tracks, 17 sectors
 
@@ -42,7 +43,7 @@ WriteSector ..\build\files\sector_3.o 				; Sector 3
 ; Now here is the loader code, that one is Microdisc only
 ;
 SetPosition 0 4
-AddFile ..\build\files\loader.o $fd00 				; Sector 4
+WriteLoader ..\build\files\loader.o $fd00 				; Sector 4
 
 ;
 ; From now on we compress data (The loader should not be compressed)
@@ -52,106 +53,149 @@ SetCompressionMode FilePack 						; So far only two modes: 'None' and 'FilePack'
 ;
 ; Then the files used in the demo
 ;
-AddDefine LOADER_INTRO {FileIndex}
-AddFile ..\build\files\intro.o $c000				; The VIP intro part
 
+AddFile ..\build\files\intro.o 				; The VIP intro part
+AddDefine LOADER_INTRO {FileIndex}
+AddDefine LOADER_INTRO_ADDRESS $c000
+
+
+
+AddFile ..\build\files\techtech.o				; The Tech Tech part
 AddDefine LOADER_TECHTECH {FileIndex}
-AddFile ..\build\files\techtech.o $c000				; The Tech Tech part
+AddDefine LOADER_TECHTECH_ADDRESS $c000
 
 ;
 ; The fonts
 ;
+
+AddFile ..\build\files\Font6x8.hir     		; 9900=STD, 9D00=ALT
 AddDefine LOADER_FONT_6x8 {FileIndex}
-AddFile ..\build\files\Font6x8.hir $9900    		; 9900=STD, 9D00=ALT
+AddDefine LOADER_FONT_6x8_ADDRESS $9900
 
+
+AddFile ..\build\files\Font6x6.hir
 AddDefine LOADER_FONT_6x6 {FileIndex}
-AddFile ..\build\files\Font6x6.hir $a000
-
+AddDefine LOADER_FONT_6x6_ADDRESS $a000
 
 ;
 ; Random logos and pictures
 ;
+
+AddFile ..\build\files\vip_rasters.hir
 AddDefine LOADER_VIP_LOGO {FileIndex}
-AddFile ..\build\files\vip_rasters.hir $9900
+AddDefine LOADER_VIP_LOGO_ADDRESS $9900
 AddDefine LOADER_VIP_LOGO_SIZE {FileSize}
 
+
+AddFile ..\build\files\cloud.hir
 AddDefine LOADER_CLOUD {FileIndex}
-AddFile ..\build\files\cloud.hir $9900
 AddDefine LOADER_CLOUD_SIZE {FileSize}
+AddDefine LOADER_CLOUD_ADDRESS $9900
 
+
+AddFile ..\build\files\rain_drop.hir
 AddDefine LOADER_RAINDROP {FileIndex}
-AddFile ..\build\files\rain_drop.hir $9900
 AddDefine LOADER_RAINDROP_SIZE {FileSize}
+AddDefine LOADER_VIP_RAINDROP_ADDRESS $9900
 
+
+AddFile ..\build\files\long_scroller.hir
 AddDefine LOADER_LONG_SCROLLER {FileIndex}
-AddFile ..\build\files\long_scroller.hir $9900
 AddDefine LOADER_LONG_SCROLLER_SIZE {FileSize}
+AddDefine LOADER_LONG_ADDRESS $9900
 
+
+AddFile ..\build\files\SoundWarning.hir
 AddDefine LOADER_SOUND_WARNING {FileIndex}
-AddFile ..\build\files\SoundWarning.hir $9900
 AddDefine LOADER_SOUND_WARNING_SIZE {FileSize}
+AddDefine LOADER_SOUND_WARNING_ADDRESS $9900
 
 
 ;
 ; The Scrollable VIP logo
 ;
+
+AddFile ..\build\files\VIPScroll.hir
 AddDefine LOADER_VIP_SCROLL {FileIndex}
-AddFile ..\build\files\VIPScroll.hir $9800
 AddDefine LOADER_VIP_SCROLL_SIZE {FileSize}
+AddDefine LOADER_VIP_SCROLL_ADDRESS $9800
 
+AddFile ..\build\files\font_30x40.hir
 AddDefine LOADER_FONT_30x40 {FileIndex}
-AddFile ..\build\files\font_30x40.hir $9800
 AddDefine LOADER_FONT_30x40_SIZE {FileSize}
+AddDefine LOADER_FONT_30x40_ADDRESS $9800
 
+
+AddFile ..\build\files\overlay.hir
 AddDefine LOADER_OVERLAY {FileIndex}
-AddFile ..\build\files\overlay.hir $9800
 AddDefine LOADER_OVERLAY_SIZE {FileSize}
+AddDefine LOADER_OVERLAY_ADDRESS $9800
 
 ;
 ; Audio
 ;
+
+AddFile ..\build\files\BoomTschak.raw 				; The kraftwerk music
 AddDefine LOADER_SAMPLE_BOOMTSCHACK {FileIndex}
-AddFile ..\build\files\BoomTschak.raw $400						; The kraftwerk music
 AddDefine LOADER_SAMPLE_BOOMTSCHACK_SIZE {FileSize}
+AddDefine LOADER_SAMPLE_BOOMTSCHACK_ADDRESS $400
 
+
+AddFile ..\build\files\SampleDefence.raw				; The defence sample
 AddDefine LOADER_SAMPLE_DEFENCE {FileIndex}
-AddFile ..\build\files\SampleDefence.raw $400				; The defence sample
 AddDefine LOADER_SAMPLE_DEFENCE_SIZE {FileSize}
+AddDefine LOADER_SAMPLE_DEFENCE_ADDRESS $400
 
+
+
+AddFile ..\build\files\SampleForce.raw 				; The force sample
 AddDefine LOADER_SAMPLE_FORCE {FileIndex}
-AddFile ..\build\files\SampleForce.raw $400				; The force sample
 AddDefine LOADER_SAMPLE_FORCE_SIZE {FileSize}
+AddDefine LOADER_SAMPLE_FORCE_ADDRESS $400
 
+
+AddFile ..\build\files\SampleHa.raw				; The Ha sample
 AddDefine LOADER_SAMPLE_HA {FileIndex}
-AddFile ..\build\files\SampleHa.raw $400				; The Ha sample
 AddDefine LOADER_SAMPLE_HA_SIZE {FileSize}
+AddDefine LOADER_SAMPLE_HA_ADDRESS $400
 
+AddFile ..\build\files\SampleYeah.raw				; The Yeah sample
 AddDefine LOADER_SAMPLE_YEAH {FileIndex}
-AddFile ..\build\files\SampleYeah.raw $400				; The Yeah sample
 AddDefine LOADER_SAMPLE_YEAH_SIZE {FileSize}
+AddDefine LOADER_SAMPLE_YEAH_ADDRESS $400
 
+
+AddFile ..\build\files\SampleChimeLoopStart.raw				; The First part of the chime loop sample
 AddDefine LOADER_SAMPLE_CHIME_START {FileIndex}
-AddFile ..\build\files\SampleChimeLoopStart.raw $400				; The First part of the chime loop sample
 AddDefine LOADER_SAMPLE_CHIME_START_SIZE {FileSize}
+AddDefine LOADER_SAMPLE_CHIME_START_ADDRESS $400
 
+
+AddFile ..\build\files\SampleChimeLoopEnd.raw			 ; The End part of the chime loop sample
 AddDefine LOADER_SAMPLE_CHIME_END {FileIndex}
-AddFile ..\build\files\SampleChimeLoopEnd.raw $400			 ; The End part of the chime loop sample
 AddDefine LOADER_SAMPLE_CHIME_END_SIZE {FileSize}
+AddDefine LOADER_SAMPLE_CHIME_END_ADDRESS $400
 
 
+
+AddFile ..\build\files\SampleMusicNonStop.raw 		 ; Music Non Stop
 AddDefine LOADER_SAMPLE_MUSIC_NON_STOP {FileIndex}
-AddFile ..\build\files\SampleMusicNonStop.raw $400			 ; Music Non Stop
 AddDefine LOADER_SAMPLE_MUSIC_NON_STOP_SIZE {FileSize}
+AddDefine LOADER_SAMPLE_MUSIC_NON_STOP_ADDRESS $400
 
+
+AddFile ..\build\files\SampleTechnoPop.raw				 ; Techno Pop
 AddDefine LOADER_SAMPLE_TECHNO_POP  {FileIndex}
-AddFile ..\build\files\SampleTechnoPop.raw $400				 ; Techno Pop
 AddDefine LOADER_SAMPLE_TECHNO_POP_SIZE {FileSize}
+AddDefine LOADER_SAMPLE_TECHNO_POP_ADDRESS $400
 
 
 
 ;
 ; YM Music
 ;
+
+AddFile ..\build\files\ThalionIntro.mym 			; The Thalion music intro
 AddDefine LOADER_INTRO_MUSIC {FileIndex}
-AddFile ..\build\files\ThalionIntro.mym $400					; The Thalion music intro
 AddDefine LOADER_INTRO_MUSIC_SIZE {FileSize}
+AddDefine LOADER_INTRO_MUSIC_ADDRESS  $400
